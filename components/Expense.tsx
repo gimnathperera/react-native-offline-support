@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Image, StyleSheet, Text, View } from "react-native";
 import Animated, {
   SlideInDown,
   useAnimatedStyle,
@@ -7,7 +7,7 @@ import Animated, {
 } from "react-native-reanimated";
 import React, { useEffect } from "react";
 
-const Expense = ({ item }) => {
+const Expense = ({ item }: any) => {
   const opacity = useSharedValue(1);
 
   // Set up the flashing effect on render
@@ -30,9 +30,12 @@ const Expense = ({ item }) => {
       style={[styles.expenseItem, animatedStyle]}
       entering={SlideInDown}
     >
-      <View
-        style={[styles.expenseColorBlock, { backgroundColor: item.color }]}
-      />
+      <View style={styles.expenseColorBlock}>
+        <Image
+          source={{ uri: item.imageUrl }}
+          style={{ width: "100%", height: "100%" }}
+        />
+      </View>
       <View style={styles.expenseDetails}>
         <Text style={styles.expenseTitle}>{item.title}</Text>
         <Text style={styles.expenseDate}>{item.date}</Text>
@@ -49,7 +52,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingHorizontal: 15,
     marginHorizontal: 20,
-    marginVertical: 4, // smaller gap between expenses
+    marginVertical: 4, // smaller gap between posts
     backgroundColor: "#FFFFFF", // light background color
     borderRadius: 10,
     shadowColor: "#000",

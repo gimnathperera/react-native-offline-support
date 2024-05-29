@@ -11,9 +11,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { observer } from "@legendapp/state/react";
 import { initializeApp } from "firebase/app";
 import Expense from "./components/Expense";
-import { getRandomPastelColor } from "./utils/getRandomColor";
+import { getRandomImageUrl } from "./utils/getRandomImage";
 import Header from "./components/Header";
-import { randomExpenseNames } from "./constants/expenses";
+import { randomPostNames } from "./constants/posts";
 import { firebaseConfig } from "./constants/firebase";
 
 // Initialize Firebase
@@ -31,19 +31,19 @@ configureObservablePersistence({
 });
 
 const state = observable({
-  expenses: [
+  posts: [
     {
       id: "1",
       title: "Groceries",
       amount: 50.0,
-      color: getRandomPastelColor(),
+      imageUrl: getRandomImageUrl(),
       date: new Date().toLocaleString(),
     },
     {
       id: "2",
       title: "Electric Bill",
       amount: 75.0,
-      color: getRandomPastelColor(),
+      imageUrl: getRandomImageUrl(),
       date: new Date().toLocaleString(),
     },
   ],
@@ -55,25 +55,25 @@ persistObservable(state, {
   remote: {
     onSetError: (err: unknown) => console.error(err),
     firebase: {
-      refPath: () => `/expenses/`,
+      refPath: () => `/posts/`,
       mode: "realtime",
     },
   },
 });
 
 const App = observer(() => {
-  const expenses = state.expenses.get();
+  const posts = state.posts.get();
 
   const addExpense = () => {
-    const expenseIndex = expenses.length % randomExpenseNames.length;
+    const expenseIndex = posts.length % randomPostNames.length;
     const newExpense = {
       id: Math.random().toString(),
-      title: randomExpenseNames[expenseIndex],
+      title: randomPostNames[expenseIndex],
       amount: Math.floor(Math.random() * 100),
-      color: getRandomPastelColor(),
+      imageUrl: getRandomImageUrl(),
       date: new Date().toLocaleString(),
     };
-    state.expenses.set((currentExpenses) => [...currentExpenses, newExpense]);
+    state.posts.set((currentExpenses) => [...currentExpenses, newExpense]);
   };
 
   return (
@@ -81,11 +81,11 @@ const App = observer(() => {
       <StatusBar />
       <Header />
       <FlatList
-        data={expenses}
+        data={posts}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => <Expense item={item} />}
       />
-      <Button title="Add Expense" onPress={addExpense} />
+      <Button title="Add Post" onPress={addExpense} />
     </View>
   );
 });

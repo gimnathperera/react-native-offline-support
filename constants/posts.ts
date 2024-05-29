@@ -1,4 +1,4 @@
-export const randomExpenseNames = [
+export const randomPostNames = [
   "Groceries",
   "Netflix",
   "Gas",
